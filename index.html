@@ -321,7 +321,6 @@
                     checkpoint.style.display = 'none';
                     // チリン音を再生
                     playChimeSound();
-                    alert('Clear!');
                 }
             });
 
@@ -337,6 +336,7 @@
             ) {
                 // ラッパの音を再生
                 playFanfareSound();
+                alert('Clear!');
                 clearInterval(timerInterval);
                 resetGame();
             }
