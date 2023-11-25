@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game with Timer, Checkpoints, and Images</title>
+    <title>三种钥匙</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            background-color: #d0f4cb; /* 薄い黄緑の背景色 */        }
+            background-color: #d0f4cb; /* 薄い黄緑の背景色 */
+        }
 
         #game-container {
-            width: 1600px;
-            height: 800px;
+            width: 1800px;
+            height: 900px;
             border: 1px solid #000;
             position: relative;
         }
@@ -55,12 +56,17 @@
             position: absolute;
             bottom: 10px;
             left: 10px;
-            font-size: 25px;
-            color: rgb(243, 30, 30);
+            font-size: 30px;
+            font-weight:bold;
+            color: rgb(33, 115, 238);
         }
     </style>
 </head>
 <body>
+    <!-- チリン音声ファイルを追加 -->
+    <audio id="chimeAudio" src="chime.mp3"></audio>
+    <!-- ラッパの音声ファイルを追加 -->
+    <audio id="fanfareAudio" src="fanfare.mp3"></audio>
     <div id="game-container">
         <div id="player" class="character"></div>
         <div id="goal" class="goal character"></div>
@@ -133,6 +139,7 @@
         <div class="obstacle character"></div>
         <div class="obstacle character"></div>
         <div class="obstacle character"></div>
+        <div class="obstacle character"></div>
 
         <div id="timer">Time: 0s</div>
     </div>
@@ -145,6 +152,8 @@
         const checkpoints = document.querySelectorAll('.checkpoint');
         const gameContainer = document.getElementById('game-container');
         const timerElement = document.getElementById('timer');
+        const chimeAudio = document.getElementById('chimeAudio');
+        const fanfareAudio = document.getElementById('fanfareAudio');
 
         let playerX = 50;
         let playerY = 50;
@@ -254,6 +263,16 @@
 
         setInterval(moveEnemies, 1000);
 
+        function playChimeSound() {
+            // チリン音を再生
+            chimeAudio.play();
+        }
+
+        function playFanfareSound() {
+            // ラッパの音を再生
+            fanfareAudio.play();
+        }
+
         function checkCollision() {
             // プレイヤーと敵キャラの接触判定
             enemies.forEach((enemy, index) => {
@@ -300,6 +319,8 @@
                 ) {
                     // 通過したポイント地点の画像を非表示にする
                     checkpoint.style.display = 'none';
+                    // チリン音を再生
+                    playChimeSound();
                 }
             });
 
@@ -314,6 +335,8 @@
                 playerRect.y + playerRect.height > goalRect.y
             ) {
                 alert('Clear!');
+                // ラッパの音を再生
+                playFanfareSound();
                 clearInterval(timerInterval);
                 resetGame();
             }
