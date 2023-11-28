@@ -1,380 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>三种钥匙</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #d0f4cb; /* 薄い黄緑の背景色 */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: url('image.jpg') no-repeat center center fixed; /* 背景画像のURLを設定 */
+      background-size: cover;
+    }
 
-        #game-container {
-            width: 1900px;
-            height: 950px;
-            border: 1px solid #000;
-            position: relative;
-        }
+    canvas {
+      display: block;
+    }
 
-        .character {
-            position: absolute;
-            transform: translate(-50%, -50%);
-        }
-
-        #player {
-            width: 30px;
-
-            height: 50px;
-            background-size: cover;
-            background-image: url('player.png'); /* プレイヤーキャラクターの画像 */
-        }
-
-        .enemy, .obstacle, .goal, .checkpoint {
-            width: 50px;
-            height: 50px;
-            background-size: cover;
-        }
-
-        .goal {
-            width: 75px;
-            height: 75px;
-            background-size: cover;
-        }
-
-        .enemy {
-            background-image: url('enemy.png'); /* 敵キャラの画像 */
-        }
-
-        .obstacle {
-            background-image: url('obstacle.png'); /* 障害物の画像 */
-        }
-
-        .goal {
-            background-image: url('goal.png'); /* ゴールの画像 */
-        }
-
-        .checkpoint {
-            background-image: url('checkpoint.png'); /* ポイント地点の画像 */
-        }
-
-        #timer {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            font-size: 30px;
-            font-weight:bold;
-            color: rgb(33, 115, 238);
-        }
-    </style>
+    #timer {
+      position: absolute;
+      top: 20px;
+      right: 10px;
+      font-size: 36px;
+      color: rgb(94, 145, 246); /* タイマーの色を青に変更 */
+    }
+  </style>
+  <title>保罗的第一次旅程</title>
 </head>
 <body>
+  <canvas id="gameCanvas" width="2000" height="1000"></canvas>
     <!-- チリン音声ファイルを追加 -->
-    <audio id="chimeAudio" src="chime.mp3"></audio>
-    <!-- ブー音声ファイルを追加 -->
-    <audio id="booAudio" src="boo.mp3"></audio>
+  <audio id="chimeAudio" src="chime.mp3"></audio>
     <!-- ラッパの音声ファイルを追加 -->
-    <audio id="fanfareAudio" src="fanfare.mp3"></audio>
-    <div id="game-container">
-        <div id="player" class="character"></div>
-        <div id="goal" class="goal character"></div>
-        <div id="checkpoint1" class="checkpoint character"></div>
-        <div id="checkpoint2" class="checkpoint character"></div>
-        <div id="checkpoint3" class="checkpoint character"></div>
-        <!-- 20個の敵キャラクターを表示 -->
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <div class="enemy character"></div>
-        <!-- 55個の障害物を表示 -->
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-        <div class="obstacle character"></div>
-       
+  <audio id="fanfareAudio" src="fanfare.mp3"></audio>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const chimeAudio = document.getElementById('chimeAudio');
+    const fanfareAudio = document.getElementById('fanfareAudio');
 
-        <div id="timer">Time: 0s</div>
-    </div>
+    let playerX = 1820;
+    let playerY = 360;
+    const goalX = 2000;
+    const goalY = 350;
+    const checkpoints = [
+      { x: 1770, y: 380, number:"       安提阿", passed: false },
+      { x: 1650, y: 450, number:"萨拉米斯", passed: false },
+      { x: 1520, y: 480, number:"帕福斯", passed: false },
+      { x: 1405, y: 350, number:"佩尔吉", passed: false },
+      { x: 1410, y: 300, number:"安提阿", passed: false },
+      { x: 1500, y: 310, number:"以哥念", passed: false },
+      { x: 1475, y: 330, number:"路司得", passed: false },
+      { x: 1570, y: 350, number:"特庇", passed: false },
+      { x: 1380, y: 360, number:"亚大利", passed: false },
+      { x: 1780, y: 400, number:"塞琉西亚", passed: false },
+    ];
 
-    <script>
-        const player = document.getElementById('player');
-        const enemies = document.querySelectorAll('.enemy');
-        const obstacles = document.querySelectorAll('.obstacle');
-        const goal = document.getElementById('goal');
-        const checkpoints = document.querySelectorAll('.checkpoint');
-        const gameContainer = document.getElementById('game-container');
-        const timerElement = document.getElementById('timer');
-        const chimeAudio = document.getElementById('chimeAudio');
-        const booAudio = document.getElementById('booAudio');
-        const fanfareAudio = document.getElementById('fanfareAudio');
+    let currentCheckpoint = 0;
+    let timerSeconds = 0;
+    let timerInterval;
 
-        let playerX = 50;
-        let playerY = 50;
+    function drawCheckpoints() {
+      checkpoints.forEach((point) => {
+        ctx.fillStyle = point.passed ? "#AEEEEE" : "#ADFF2F"; /* 薄い黄緑に変更 */
+        ctx.fillRect(point.x, point.y, 30, 30);
+        ctx.fillStyle = "blue";
+        ctx.font = "16px Arial";
+        ctx.fillText(point.number, point.x + 10, point.y + 20);
+      });
+    }
 
-        let goalX = 1800;
-        let goalY = 900;
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        let startTime;
-        let timerInterval;
+      // Draw checkpoints
+      drawCheckpoints();
 
-        // 敵キャラクターの座標を管理する配列
-        let enemyCoordinates = [];
+      // Draw goal
+      ctx.fillStyle = "#ffa3a3";
+      ctx.fillRect(goalX, goalY, 30, 30);
 
-        function getRandomCoordinates() {
-            return {
-                x: Math.random() * (gameContainer.clientWidth - 50),
-                y: Math.random() * (gameContainer.clientHeight - 50)
-            };
+      // Draw player
+      ctx.fillStyle = "#87CEEB"; /* 薄い水色に変更 */
+      ctx.fillRect(playerX, playerY, 30, 30);
+
+      // Check if the player has passed the next checkpoint
+      if (!checkpoints[currentCheckpoint].passed &&
+          playerX < checkpoints[currentCheckpoint].x + 50 &&
+          playerX + 50 > checkpoints[currentCheckpoint].x &&
+          playerY < checkpoints[currentCheckpoint].y + 50 &&
+          playerY + 50 > checkpoints[currentCheckpoint].y) {
+        checkpoints[currentCheckpoint].passed = true;
+        currentCheckpoint++;
+        playChimeSound();
+
+        // Check if all checkpoints have been passed
+        if (currentCheckpoint === checkpoints.length) {
+          clearInterval(timerInterval);
+          playFanfareSound();
+          alert("真辛苦了！欢迎你回来！\nTime: " + timerSeconds + "秒");
+          resetGame();
         }
+      }
 
-        function updateCharacterPosition(character, x, y) {
-            character.style.left = `${x}px`;
-            character.style.top = `${y}px`;
-        }
+      // Check if the player has reached the goal
+      if (playerX < goalX + 50 && playerX + 50 > goalX && playerY < goalY + 50 && playerY + 50 > goalY) {
+        clearInterval(timerInterval);
+        playFanfareSound();
+        alert("真辛苦了！欢迎你回来！\nTime: " + timerSeconds + "秒");
+        resetGame();
+      }
 
-        function resetGame() {
-            playerX = 50;
-            playerY = 50;
+      // Draw timer
+      updateTimer();
 
-            goalX = 1800;
-            goalY = 900;
+      requestAnimationFrame(gameLoop);
+    }
 
-            updateCharacterPosition(player, playerX, playerY);
-            updateCharacterPosition(goal, goalX, goalY);
+    function resetGame() {
+      playerX = 1820;
+      playerY = 360;
+      currentCheckpoint = 0;
+      checkpoints.forEach((point) => {
+        point.passed = false;
+      });
+      timerSeconds = 0;
+      updateTimer();
+    }
 
-            for (let i = 0; i < checkpoints.length; i++) {
-                const checkpointCoordinates = getRandomCoordinates();
-                updateCharacterPosition(checkpoints[i], checkpointCoordinates.x, checkpointCoordinates.y);
-                checkpoints[i].style.display = 'block';
-            }
-
-            // 敵キャラクターの初期位置を設定
-            for (let i = 0; i < enemies.length; i++) {
-                enemyCoordinates.push(getRandomCoordinates());
-                updateCharacterPosition(enemies[i], enemyCoordinates[i].x, enemyCoordinates[i].y);
-            }
-
-            for (let i = 0; i < obstacles.length; i++) {
-                const obstacleCoordinates = getRandomCoordinates();
-                updateCharacterPosition(obstacles[i], obstacleCoordinates.x, obstacleCoordinates.y);
-            }
-
-            startTime = new Date();
-            clearInterval(timerInterval);
-            updateTimer();
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        function updateTimer() {
-            const currentTime = new Date();
-            const elapsedTime = Math.floor((currentTime - startTime) / 1000); // 経過した秒数
-            timerElement.textContent = `Time: ${elapsedTime}s`;
-        }
-
-        window.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case 'ArrowUp':
-                    playerY = Math.max(0, playerY - 10);
-                    break;
-                case 'ArrowDown':
-                    playerY = Math.min(gameContainer.clientHeight - player.clientHeight, playerY + 10);
-                    break;
-                case 'ArrowLeft':
-                    playerX = Math.max(0, playerX - 10);
-                    break;
-                case 'ArrowRight':
-                    playerX = Math.min(gameContainer.clientWidth - player.clientWidth, playerX + 10);
-                    break;
-            }
-
-            updateCharacterPosition(player, playerX, playerY);
-            checkCollision();
-        });
-
-        function moveEnemies() {
-            enemies.forEach((enemy, index) => {
-                const randomDirection = Math.floor(Math.random() * 4);
-
-                switch (randomDirection) {
-                    case 0:
-                        enemyCoordinates[index].x = Math.max(0, enemyCoordinates[index].x - 15);
-                        break;
-                    case 1:
-                        enemyCoordinates[index].x = Math.min(gameContainer.clientWidth - enemy.clientWidth, enemyCoordinates[index].x + 15);
-                        break;
-                    case 2:
-                        enemyCoordinates[index].y = Math.max(0, enemyCoordinates[index].y - 15);
-                        break;
-                    case 3:
-                        enemyCoordinates[index].y = Math.min(gameContainer.clientHeight - enemy.clientHeight, enemyCoordinates[index].y + 15);
-                        break;
-                }
-
-                updateCharacterPosition(enemy, enemyCoordinates[index].x, enemyCoordinates[index].y);
-            });
-        }
-
-        setInterval(moveEnemies, 1000);
-
-        function playChimeSound() {
+    function updateTimer() {
+      ctx.clearRect(canvas.width - 150, 0, 150, 50); // 修正：タイマーの領域をクリアするように変更
+      ctx.fillStyle = "blue"; /* タイマーの色を青に変更 */
+      ctx.font = "24px Arial";
+      ctx.fillText("保罗的第一次旅程         "+"Time: " + timerSeconds/100, canvas.width - 500, 30); // 修正：タイマーの位置を調整
+      timerSeconds++;
+    }
+    function playChimeSound() {
             // チリン音を再生
             chimeAudio.play();
         }
-        function playbooSound() {
-            // ブー音を再生
-            booAudio.play();
-        }
 
-        function playFanfareSound() {
+    function playFanfareSound() {
             // ラッパの音を再生
             fanfareAudio.play();
         }
 
-        function checkCollision() {
-            // プレイヤーと敵キャラの接触判定
-            enemies.forEach((enemy, index) => {
-                const rect1 = player.getBoundingClientRect();
-                const rect2 = enemy.getBoundingClientRect();
+    window.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "ArrowUp":
+          playerY -= 10;
+          break;
+        case "ArrowDown":
+          playerY += 10;
+          break;
+        case "ArrowLeft":
+          playerX -= 10;
+          break;
+        case "ArrowRight":
+          playerX += 10;
+          break;
+      }
+    });
 
-                if (
-                    rect1.x < rect2.x + rect2.width &&
-                    rect1.x + rect1.width > rect2.x &&
-                    rect1.y < rect2.y + rect2.height &&
-                    rect1.y + rect1.height > rect2.y
-                ) {
-                    playbooSound();
-                    resetGame();
-                }
-            });
+    timerInterval = setInterval(() => {
+      updateTimer();
+    }, 1000);
 
-            // プレイヤーと障害物の接触判定
-            obstacles.forEach((obstacle, index) => {
-                const rect1 = player.getBoundingClientRect();
-                const rect2 = obstacle.getBoundingClientRect();
-
-                if (
-                    rect1.x < rect2.x + rect2.width &&
-                    rect1.x + rect1.width > rect2.x &&
-                    rect1.y < rect2.y + rect2.height &&
-                    rect1.y + rect1.height > rect2.y
-                ) {
-                    // ブー音を再生
-                    playbooSound();
-                    resetGame();
-                }
-            });
-
-            // プレイヤーとポイント地点の接触判定
-            checkpoints.forEach((checkpoint, index) => {
-                const rect1 = player.getBoundingClientRect();
-                const rect2 = checkpoint.getBoundingClientRect();
-
-                if (
-                    rect1.x < rect2.x + rect2.width &&
-                    rect1.x + rect1.width > rect2.x &&
-                    rect1.y < rect2.y + rect2.height &&
-                    rect1.y + rect1.height > rect2.y
-                ) {
-                    // 通過したポイント地点の画像を非表示にする
-                    checkpoint.style.display = 'none';
-                    // チリン音を再生
-                    playChimeSound();
-                }
-            });
-
-            // ゴールに到達したかどうかを確認
-            const playerRect = player.getBoundingClientRect();
-            const goalRect = goal.getBoundingClientRect();
-
-            if (
-                playerRect.x < goalRect.x + goalRect.width &&
-                playerRect.x + playerRect.width > goalRect.x &&
-                playerRect.y < goalRect.y + goalRect.height &&
-                playerRect.y + playerRect.height > goalRect.y
-            ) {
-                // ラッパの音を再生
-                playFanfareSound();
-                clearInterval(timerInterval);
-                resetGame();
-            }
-        }
-
-        // ゲームの初期化
-        resetGame();
-    </script>
+    gameLoop();
+  </script>
 </body>
 </html>
