@@ -12,8 +12,8 @@
         }
 
         #game-container {
-            width: 1800px;
-            height: 900px;
+            width: 1900px;
+            height: 950px;
             border: 1px solid #000;
             position: relative;
         }
@@ -24,7 +24,8 @@
         }
 
         #player {
-            width: 25px;
+            width: 30px;
+
             height: 50px;
             background-size: cover;
             background-image: url('player.png'); /* プレイヤーキャラクターの画像 */
@@ -71,6 +72,8 @@
 <body>
     <!-- チリン音声ファイルを追加 -->
     <audio id="chimeAudio" src="chime.mp3"></audio>
+    <!-- ブー音声ファイルを追加 -->
+    <audio id="booAudio" src="boo.mp3"></audio>
     <!-- ラッパの音声ファイルを追加 -->
     <audio id="fanfareAudio" src="fanfare.mp3"></audio>
     <div id="game-container">
@@ -100,7 +103,7 @@
         <div class="enemy character"></div>
         <div class="enemy character"></div>
         <div class="enemy character"></div>
-        <!-- 50個の障害物を表示 -->
+        <!-- 55個の障害物を表示 -->
         <div class="obstacle character"></div>
         <div class="obstacle character"></div>
         <div class="obstacle character"></div>
@@ -157,16 +160,12 @@
         <div class="obstacle character"></div>
         <div class="obstacle character"></div>
         <div class="obstacle character"></div>
-
-
-
-
-
-
-
-
-
-
+        <div class="obstacle character"></div>
+        <div class="obstacle character"></div>
+        <div class="obstacle character"></div>
+        <div class="obstacle character"></div>
+        <div class="obstacle character"></div>
+       
 
         <div id="timer">Time: 0s</div>
     </div>
@@ -180,13 +179,14 @@
         const gameContainer = document.getElementById('game-container');
         const timerElement = document.getElementById('timer');
         const chimeAudio = document.getElementById('chimeAudio');
+        const booAudio = document.getElementById('booAudio');
         const fanfareAudio = document.getElementById('fanfareAudio');
 
         let playerX = 50;
         let playerY = 50;
 
-        let goalX = 1400;
-        let goalY = 700;
+        let goalX = 1800;
+        let goalY = 900;
 
         let startTime;
         let timerInterval;
@@ -210,8 +210,8 @@
             playerX = 50;
             playerY = 50;
 
-            goalX = 1400;
-            goalY = 700;
+            goalX = 1800;
+            goalY = 900;
 
             updateCharacterPosition(player, playerX, playerY);
             updateCharacterPosition(goal, goalX, goalY);
@@ -294,6 +294,10 @@
             // チリン音を再生
             chimeAudio.play();
         }
+        function playbooSound() {
+            // ブー音を再生
+            booAudio.play();
+        }
 
         function playFanfareSound() {
             // ラッパの音を再生
@@ -312,7 +316,7 @@
                     rect1.y < rect2.y + rect2.height &&
                     rect1.y + rect1.height > rect2.y
                 ) {
-                    alert('Game Over!');
+                    playbooSound();
                     resetGame();
                 }
             });
@@ -328,7 +332,8 @@
                     rect1.y < rect2.y + rect2.height &&
                     rect1.y + rect1.height > rect2.y
                 ) {
-                    alert('Game Over!');
+                    // ブー音を再生
+                    playbooSound();
                     resetGame();
                 }
             });
@@ -363,7 +368,6 @@
             ) {
                 // ラッパの音を再生
                 playFanfareSound();
-                alert('Clear!');
                 clearInterval(timerInterval);
                 resetGame();
             }
